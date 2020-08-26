@@ -3,7 +3,7 @@ import yaml
 import logging
 import requests
 import json
-from .cluster import Cluster
+from .cluster import ClusterApi
 
 class Staroid:
     """Staroid client object"""
@@ -30,7 +30,7 @@ class Staroid:
 
 
     def cluster(self):
-        c = Cluster(self)
+        c = ClusterApi(self)
         return c
 
     def get_access_token(self):
@@ -42,6 +42,14 @@ class Staroid:
     def with_org(self, org):
         self.__org = org
         return self
+
+    def get_all_orgs(self):
+        r = self._api_get(self, "orgs/")
+        if r.status_code == 200:
+            return json.loads(r.text)
+        else:
+            logging.error("Can't get orgs")
+            return None
 
     def __get_request_url(self, path):
         request_url = "{}/{}".format(self.__api_addr, path)

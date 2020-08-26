@@ -2,10 +2,10 @@ import requests
 import logging
 import json
 
-class Cluster:
-    """Cluster object"""
+class ClusterApi:
+    """Cluster api"""
 
-    def __init__(self, staroid=None):
+    def __init__(self, staroid):
         self.__staroid = staroid
 
     def get_all(self):

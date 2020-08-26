@@ -1,2 +1,3 @@
 from .staroid import Staroid
-from .cluster import Cluster
+from .cluster import ClusterApi
+from .namespace import NamespaceApi
