@@ -4,6 +4,7 @@ import logging
 import requests
 import json
 from .cluster import ClusterApi
+from .namespace import NamespaceApi
 
 class Org:
     def __init__(self, json):
@@ -41,10 +42,13 @@ class Staroid:
         except EnvironmentError:
             pass
 
-
     def cluster(self):
         c = ClusterApi(self)
         return c
+
+    def namespace(self, cluster):
+        n = NamespaceApi(self, cluster)
+        return n
 
     def get_access_token(self):
         return self.__access_token
@@ -92,6 +96,13 @@ class Staroid:
         headers = self.__get_request_headers()
 
         r = requests.post(url, headers=headers, data=json.dumps(payload))
+        return r
+
+    def _api_put(self, path, payload):
+        url = self.__get_request_url(path);
+        headers = self.__get_request_headers()
+
+        r = requests.put(url, headers=headers, data=json.dumps(payload))
         return r
 
     def _api_delete(self, path):

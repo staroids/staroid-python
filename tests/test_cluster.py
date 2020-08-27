@@ -26,6 +26,12 @@ class TestCluster(unittest.TestCase):
         # then
         self.assertEqual("staroid-python it-test", c.name())
 
+        # when already exists on create
+        c = s.cluster().create("staroid-python it-test")
+
+        # then
+        self.assertEqual("staroid-python it-test", c.name())
+
         # when list
         clusters_after = s.cluster().get_all()
 
@@ -38,3 +44,4 @@ class TestCluster(unittest.TestCase):
         # then
         clusters_after_deleted = s.cluster().get_all()
         self.assertEqual(len(clusters_after_deleted), len(clusters_before))
+

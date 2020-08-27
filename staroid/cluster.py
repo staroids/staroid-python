@@ -9,7 +9,7 @@ CLUSTER_ID_MAP={
 
 class SKE:
     def __init__(self, json):
-        self.__json, json
+        self.__json = json
 
     def name(self):
         return self.__json["name"]
@@ -46,6 +46,16 @@ class ClusterApi:
     def __init__(self, staroid):
         self.__staroid = staroid
 
+    def get(self, name):
+        clusters = self.get_all()
+        cluster_found = None
+        for c in clusters:
+            if c.name() == name:
+                cluster_found = c
+                break
+
+        return cluster_found
+
     def get_all(self):
         r = self.__staroid._api_get("orgs/{}/vc".format(self.__staroid.get_org()))
         if r.status_code == 200:
@@ -71,23 +81,21 @@ class ClusterApi:
         if r.status_code == 200:
             json_object = json.loads(r.text)
             return Cluster(json_object)
+        elif r.status_code == 409: # already exists
+            return self.get(name)
         else:
             logging.error("Can not create clusters {}", r.status_code)
             return None
 
 
     def delete(self, name):
-        clusters = self.get_all()
-        cluster_to_del = None
-        for c in clusters:
-            if c.name() == name:
-                cluster_to_del = c
-                break
-
+        cluster_to_del = self.get(name)
         if cluster_to_del != None:
             r = self.__staroid._api_delete(
                 "orgs/{}/vc/{}".format(self.__staroid.get_org(), cluster_to_del.id())
             )
+        else:
+            return None
 
         if r.status_code == 200:
             return cluster_to_del
