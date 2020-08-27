@@ -5,6 +5,19 @@ import requests
 import json
 from .cluster import ClusterApi
 
+class Org:
+    def __init__(self, json):
+        self.__json = json
+
+    def name(self):
+        return self.__json["name"]
+
+    def provider(self):
+        return self.__json["provider"]
+
+    def id(self):
+        return int(self.__json["id"])
+
 class Staroid:
     """Staroid client object"""
 
@@ -44,9 +57,14 @@ class Staroid:
         return self
 
     def get_all_orgs(self):
-        r = self._api_get(self, "orgs/")
+        r = self._api_get("orgs/")
         if r.status_code == 200:
-            return json.loads(r.text)
+            org_object_list = json.loads(r.text)
+            org_list = []
+            for js in org_object_list:
+                org_list.append(Org(js))
+
+            return org_list
         else:
             logging.error("Can't get orgs")
             return None
@@ -69,10 +87,16 @@ class Staroid:
         r = requests.get(url, headers=headers)
         return r
 
-    
     def _api_post(self, path, payload):
         url = self.__get_request_url(path);
         headers = self.__get_request_headers()
 
-        r = requests.get(url, headers=headers, data=json.dumps(payload))
+        r = requests.post(url, headers=headers, data=json.dumps(payload))
+        return r
+
+    def _api_delete(self, path):
+        url = self.__get_request_url(path);
+        headers = self.__get_request_headers()
+
+        r = requests.delete(url, headers=headers)
         return r
