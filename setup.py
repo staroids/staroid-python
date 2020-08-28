@@ -6,6 +6,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name="staroid", # Replace with your own username
     version="0.0.1",
+    license='MIT',
     author="Staroid",
     author_email="support@staroid.com",
     description="Python client library for Staroid cloud platform",
@@ -30,7 +31,7 @@ setuptools.setup(
         # Specify the Python versions you support here. In particular, ensure
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8'
+        'Programming Language :: Python :: 3.8',
 
         # Pick your license as you wish (should match "license" above)
         "License :: OSI Approved :: MIT License",
