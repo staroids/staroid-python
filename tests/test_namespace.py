@@ -31,7 +31,23 @@ class TestCluster(unittest.TestCase):
         wait_for_phase(ns_api, ns, "RUNNING")
         self.assertEqual("RUNNING", ns_api.get_by_id(ns.id()).phase())
 
-        # when stop a namespace
+        # start shell
+        ns_api.shell_start("instance1")
+
+        # stop shell
+        ns_api.shell_stop("instance1")
+
+        # pause
+        ns = ns_api.stop("instance1")
+        wait_for_phase(ns_api, ns, "PAUSED")
+        self.assertEqual("PAUSED", ns_api.get_by_id(ns.id()).phase())
+
+        # resume
+        ns = ns_api.start("instance1")
+        wait_for_phase(ns_api, ns, "RUNNING")
+        self.assertEqual("RUNNING", ns_api.get_by_id(ns.id()).phase())
+
+        # when delete a namespace
         ns = ns_api.delete("instance1")
 
         # then namespace becomes REMOVED
