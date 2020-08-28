@@ -203,3 +203,20 @@ class NamespaceApi:
         else:
             logging.error("Can not stop shell {}", r.status_code)
             return None
+
+    def get_all_resources(self, instance_name):
+        ns = self.get(instance_name)
+        if ns == None:
+            return None
+
+        r = self.__staroid._api_get(
+            "namespace/{}".format(
+                ns.namespace()
+            )
+        )
+        if r.status_code == 200:
+            js = json.loads(r.text)
+            return js
+        else:
+            logging.error("Can not get namespace resources {}", r.status_code)
+            return None
