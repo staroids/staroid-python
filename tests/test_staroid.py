@@ -1,16 +1,30 @@
 import unittest
 import tempfile
+import os
 
 from staroid import Staroid
+
+def integration_test_ready():
+    return "STAROID_ACCESS_TOKEN" in os.environ and "STAROID_ACCOUNT" in os.environ
 
 class TestStaroid(unittest.TestCase):
     def test_initialize(self):
         s = Staroid()
 
     def test_read_config(self):
+        # unset env
+        at = None
+        ac = None
+        if "STAROID_ACCESS_TOKEN" in os.environ:
+            at = os.environ["STAROID_ACCESS_TOKEN"]  
+            del os.environ["STAROID_ACCESS_TOKEN"]  
+        if "STAROID_ACCOUNT" in os.environ:
+            ac = os.environ["STAROID_ACCOUNT"]
+            del os.environ["STAROID_ACCOUNT"]
+
         # given
         fp = tempfile.NamedTemporaryFile()
-        fp.write(b"access_token: abc\ndefault_org: GITHUB/user1")
+        fp.write(b"access_token: abc\naccount: GITHUB/user1")
         fp.flush()
 
         # when
@@ -18,4 +32,28 @@ class TestStaroid(unittest.TestCase):
 
         # then
         self.assertEqual("abc", s.get_access_token())
-        self.assertEqual("GITHUB/user1", s.get_org())
+        self.assertEqual("GITHUB/user1", s.get_account())
+
+        # restore env
+        if at != None:
+            os.environ["STAROID_ACCESS_TOKEN"] = at
+        if ac != None:
+            os.environ["STAROID_ACCOUNT"] = ac
+
+    @unittest.skipUnless(integration_test_ready(), "Integration test environment is not configured")
+    def test_read_default_account(self):
+        # given access_token is set but account is not set
+        ac = None
+        if "STAROID_ACCOUNT" in os.environ:
+            ac = os.environ["STAROID_ACCOUNT"]
+            del os.environ["STAROID_ACCOUNT"]
+
+        # when
+        s = Staroid()
+
+        # then
+        self.assertNotEqual(None, s.get_account())
+
+        # restore env
+        if ac != None:
+            os.environ["STAROID_ACCOUNT"] = ac

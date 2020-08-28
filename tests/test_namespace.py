@@ -20,8 +20,7 @@ class TestCluster(unittest.TestCase):
     @unittest.skipUnless(integration_test_ready(), "Integration test environment is not configured")
     def test_crud_namespace(self):
         # given
-        s = Staroid(access_token=os.environ["STAROID_ACCESS_TOKEN"], org=os.environ["STAROID_ACCOUNT"])
-        all_orgs = s.get_all_orgs()
+        s = Staroid(access_token=os.environ["STAROID_ACCESS_TOKEN"], account=os.environ["STAROID_ACCOUNT"])
         c = s.cluster().create("staroid-python it-test-namespace")
 
         # when create a namespace

@@ -10,14 +10,14 @@ def integration_test_ready():
 class TestCluster(unittest.TestCase):
     @unittest.skipUnless(integration_test_ready(), "Integration test environment is not configured")
     def test_initialize(self):
-        s = Staroid(access_token=os.environ["STAROID_ACCESS_TOKEN"], org=os.environ["STAROID_ACCOUNT"])
-        all_orgs = s.get_all_orgs()
+        s = Staroid(access_token=os.environ["STAROID_ACCESS_TOKEN"], account=os.environ["STAROID_ACCOUNT"])
+        s.get_all_accounts()
 
     @unittest.skipUnless(integration_test_ready(), "Integration test environment is not configured")
     def test_crud(self):
         # given
-        s = Staroid(access_token=os.environ["STAROID_ACCESS_TOKEN"], org=os.environ["STAROID_ACCOUNT"])
-        all_orgs = s.get_all_orgs()
+        s = Staroid(access_token=os.environ["STAROID_ACCESS_TOKEN"], account=os.environ["STAROID_ACCOUNT"])
+        all_accounts = s.get_all_accounts()
         clusters_before = s.cluster().get_all()
 
         # when create

@@ -41,7 +41,7 @@ class NamespaceApi:
     def get_all(self):
         r = self.__staroid._api_get(
             "orgs/{}/vc/{}/instance".format(
-                self.__staroid.get_org(),
+                self.__staroid.get_account(),
                 self.__cluster.id()
             )
         )
@@ -69,7 +69,7 @@ class NamespaceApi:
     def get_by_id(self, instance_id):
         r = self.__staroid._api_get(
             "orgs/{}/vc/{}/instance/{}".format(
-                self.__staroid.get_org(),
+                self.__staroid.get_account(),
                 self.__cluster.id(),
                 instance_id
             )
@@ -86,7 +86,7 @@ class NamespaceApi:
 
         r = self.__staroid._api_post(
             "orgs/{}/vc/{}/instance".format(
-                self.__staroid.get_org(),
+                self.__staroid.get_account(),
                 self.__cluster.id()
             ),
             {
@@ -114,7 +114,7 @@ class NamespaceApi:
 
         r = self.__staroid._api_delete(
             "orgs/{}/vc/{}/instance/{}".format(
-                self.__staroid.get_org(),
+                self.__staroid.get_account(),
                 self.__cluster.id(),
                 ns.id()
             )
@@ -136,7 +136,7 @@ class NamespaceApi:
 
         r = self.__staroid._api_put(
             "orgs/{}/vc/{}/instance/{}/resume".format(
-                self.__staroid.get_org(),
+                self.__staroid.get_account(),
                 self.__cluster.id(),
                 ns.id()
             )
@@ -158,7 +158,7 @@ class NamespaceApi:
 
         r = self.__staroid._api_put(
             "orgs/{}/vc/{}/instance/{}/pause".format(
-                self.__staroid.get_org(),
+                self.__staroid.get_account(),
                 self.__cluster.id(),
                 ns.id()
             )
@@ -180,7 +180,7 @@ class NamespaceApi:
 
         r = self.__staroid._api_post(
             "orgs/{}/vc/{}/instance/{}/shell".format(
-                self.__staroid.get_org(),
+                self.__staroid.get_account(),
                 self.__cluster.id(),
                 ns.id()
             )
@@ -201,7 +201,7 @@ class NamespaceApi:
 
         r = self.__staroid._api_delete(
             "orgs/{}/vc/{}/instance/{}/shell".format(
-                self.__staroid.get_org(),
+                self.__staroid.get_account(),
                 self.__cluster.id(),
                 ns.id()
             )

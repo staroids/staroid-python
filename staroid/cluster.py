@@ -57,7 +57,7 @@ class ClusterApi:
         return cluster_found
 
     def get_all(self):
-        r = self.__staroid._api_get("orgs/{}/vc".format(self.__staroid.get_org()))
+        r = self.__staroid._api_get("orgs/{}/vc".format(self.__staroid.get_account()))
         if r.status_code == 200:
             json_object_list = json.loads(r.text)
             cluster_list = []
@@ -71,7 +71,7 @@ class ClusterApi:
 
     def create(self, name, cluster="gcp us-west1"):
         r = self.__staroid._api_post(
-            "orgs/{}/vc".format(self.__staroid.get_org()),
+            "orgs/{}/vc".format(self.__staroid.get_account()),
             {
                 "name": name,
                 "clusterId": CLUSTER_ID_MAP[cluster]
@@ -92,7 +92,7 @@ class ClusterApi:
         cluster_to_del = self.get(name)
         if cluster_to_del != None:
             r = self.__staroid._api_delete(
-                "orgs/{}/vc/{}".format(self.__staroid.get_org(), cluster_to_del.id())
+                "orgs/{}/vc/{}".format(self.__staroid.get_account(), cluster_to_del.id())
             )
         else:
             return None
