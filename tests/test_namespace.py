@@ -34,6 +34,9 @@ class TestCluster(unittest.TestCase):
         # start shell
         ns_api.shell_start("instance1")
 
+        resources = ns_api.get_all_resources("instance1")
+        self.assertTrue(len(resources["services"]) > 0)
+
         # stop shell
         ns_api.shell_stop("instance1")
 
