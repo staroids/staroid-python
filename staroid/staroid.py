@@ -19,18 +19,50 @@ class Org:
     def id(self):
         return int(self.__json["id"])
 
+class User:
+    def __init__(self, json):
+        self.__json = json
+
+    def name(self):
+        return self.__json["name"]
+
+    def provider(self):
+        return self.__json["provider"]
+
+    def principal(self):
+        return self.__json["principal"]
+
+
 class Staroid:
     """Staroid client object"""
 
-    def __init__(self, access_token=None, org=None, config_path="~/.staroid/config.yaml"):
+    def __init__(self, access_token=None, account=None, config_path="~/.staroid/config.yaml"):
         self.__api_addr = "https://staroid.com/api"
+        self.__access_token = None
+        self.__account = None
+
+        # 1. set from configs
         self.__read_config(config_path)
 
+        # 2. set from env
+        if "STAROID_ACCESS_TOKEN" in os.environ:
+            self.__access_token = os.environ["STAROID_ACCESS_TOKEN"]
+
+        if "STAROID_ACCOUNT" in os.environ:
+            self.__account = os.environ["STAROID_ACCOUNT"]
+
+        # 3. set from args
         if access_token != None:
             self.__access_token = access_token
         
-        if org != None:
-            self.__org = org
+        if account != None:
+            self.__account = account
+
+        # if account is not set, set default user account
+        if self.__account == None:
+            user = self.get_user()
+            if user != None:
+                self.__account = "{}/{}".format(user.provider(), user.principal())
 
     def __read_config(self, config_path):
         try:
@@ -38,7 +70,7 @@ class Staroid:
                 logging.info("Read configuration from " + config_path)
                 data = yaml.load(f, Loader=yaml.FullLoader)
                 self.__access_token = data.get("access_token", None)
-                self.__org = data.get("default_org", None)
+                self.__account = data.get("account", None)
         except EnvironmentError:
             pass
 
@@ -53,14 +85,26 @@ class Staroid:
     def get_access_token(self):
         return self.__access_token
 
-    def get_org(self):
-        return self.__org
+    def get_account(self):
+        return self.__account
 
-    def with_org(self, org):
-        self.__org = org
+    def with_account(self, account):
+        self.__account = account
         return self
 
-    def get_all_orgs(self):
+    def get_user(self):
+        "read user information"
+        if self.__access_token == None:
+            return None
+
+        r = self._api_get("auth/user")
+        if r.status_code == 200:
+            js = json.loads(r.text)
+            return User(js)
+        else:
+            return None
+
+    def get_all_accounts(self):
         r = self._api_get("orgs/")
         if r.status_code == 200:
             org_object_list = json.loads(r.text)
@@ -70,7 +114,7 @@ class Staroid:
 
             return org_list
         else:
-            logging.error("Can't get orgs")
+            logging.error("Can't get accounts")
             return None
 
     def __get_request_url(self, path):
