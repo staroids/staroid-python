@@ -15,11 +15,20 @@ from staroid import Staroid
 
 star = Staroid()
 
-# create a ske kubernetes cluster
+# Create a ske kubernetes cluster
 my_cluster = star.cluster().create("my cluster", "gcp us-west1")
 
-# create a namespace and deploy project 
+# Launch a project 
 ns = star.namespace(my_cluster).create("my_app", "GITHUB/staroids/namespace:master")
+
+# stop instance
+ns = star.namespace(my_cluster).stop("my_app")
+
+# restart instance
+ns = star.namespace(my_cluster).start("my_app")
+
+# delete instance
+ns = star.namespace(my_cluster).delete("my_app")
 ```
 
 ## Configuration

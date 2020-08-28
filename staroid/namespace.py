@@ -132,8 +132,6 @@ class NamespaceApi:
         if ns == None:
             return None
 
-        c = Commit(commit_url)
-
         r = self.__staroid._api_put(
             "orgs/{}/vc/{}/instance/{}/resume".format(
                 self.__staroid.get_account(),
@@ -153,8 +151,6 @@ class NamespaceApi:
         ns = self.get(instance_name)
         if ns == None:
             return None
-
-        c = Commit(commit_url)
 
         r = self.__staroid._api_put(
             "orgs/{}/vc/{}/instance/{}/pause".format(
@@ -176,8 +172,6 @@ class NamespaceApi:
         if ns == None:
             return None
 
-        c = Commit(commit_url)
-
         r = self.__staroid._api_post(
             "orgs/{}/vc/{}/instance/{}/shell".format(
                 self.__staroid.get_account(),
@@ -197,8 +191,6 @@ class NamespaceApi:
         if ns == None:
             return None
 
-        c = Commit(commit_url)
-
         r = self.__staroid._api_delete(
             "orgs/{}/vc/{}/instance/{}/shell".format(
                 self.__staroid.get_account(),
@@ -207,8 +199,7 @@ class NamespaceApi:
             )
         )
         if r.status_code == 200:
-            js = json.loads(r.text)
-            return Namespace(js)
+            return None
         else:
-            logging.error("Can not start shell {}", r.status_code)
+            logging.error("Can not stop shell {}", r.status_code)
             return None

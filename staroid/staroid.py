@@ -135,14 +135,14 @@ class Staroid:
         r = requests.get(url, headers=headers)
         return r
 
-    def _api_post(self, path, payload):
+    def _api_post(self, path, payload=None):
         url = self.__get_request_url(path);
         headers = self.__get_request_headers()
 
         r = requests.post(url, headers=headers, data=json.dumps(payload))
         return r
 
-    def _api_put(self, path, payload):
+    def _api_put(self, path, payload=None):
         url = self.__get_request_url(path);
         headers = self.__get_request_headers()
 
