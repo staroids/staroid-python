@@ -37,6 +37,12 @@ class TestCluster(unittest.TestCase):
         resources = ns_api.get_all_resources("instance1")
         self.assertTrue(len(resources["services"]) > 0)
 
+        # start tunnel
+        ns_api.start_tunnel("instance1", ["57683:localhost:57683"])
+
+        # stop tunnel
+        ns_api.stop_tunnel("instance1")
+
         # stop shell
         ns_api.shell_stop("instance1")
 

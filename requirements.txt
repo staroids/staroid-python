@@ -1,2 +1,3 @@
 pyyaml
 requests
+python3-wget

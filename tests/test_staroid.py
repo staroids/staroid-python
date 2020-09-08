@@ -1,6 +1,8 @@
 import unittest
 import tempfile
 import os
+import pathlib
+import shutil
 
 from staroid import Staroid
 
@@ -39,6 +41,22 @@ class TestStaroid(unittest.TestCase):
             os.environ["STAROID_ACCESS_TOKEN"] = at
         if ac != None:
             os.environ["STAROID_ACCOUNT"] = ac
+
+    def test_download_chisel(self):
+        # given
+        tmp_dir = tempfile.mkdtemp()
+        s = Staroid(cache_dir=tmp_dir)
+
+        # when
+        chisel_path = s.get_chisel_path()
+
+        # then
+        self.assertIsNotNone(chisel_path)
+        self.assertTrue(os.path.isfile(chisel_path))
+        
+        # clean up
+        shutil.rmtree(pathlib.Path(tmp_dir))
+
 
     @unittest.skipUnless(integration_test_ready(), "Integration test environment is not configured")
     def test_read_default_account(self):
