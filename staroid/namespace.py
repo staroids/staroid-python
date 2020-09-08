@@ -3,6 +3,7 @@ import logging
 import json
 import subprocess
 import atexit
+import time
 from .commit import Commit
 
 class Namespace:

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="staroid", # Replace with your own username
-    version="0.0.6",
+    version="0.0.7",
     license='MIT',
     author="Staroid",
     author_email="support@staroid.com",
