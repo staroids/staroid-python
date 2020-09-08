@@ -225,7 +225,7 @@ class NamespaceApi:
             logging.error("Can not get namespace resources {}", r.status_code)
             return None
 
-    def _is_tunnel_running(self, instance_name):
+    def is_tunnel_running(self, instance_name):
         if instance_name in self.__tunnel_processes:
             p = self.__tunnel_processes[instance_name]
             p.poll()
@@ -234,7 +234,7 @@ class NamespaceApi:
             return False
 
     def start_tunnel(self, instance_name, tunnels):
-        if self._is_tunnel_running(instance_name):
+        if self.is_tunnel_running(instance_name):
             return
 
         chisel_path = self.__staroid.get_chisel_path()
@@ -281,7 +281,7 @@ class NamespaceApi:
                 p.kill() # supported from python 2.6
 
     def stop_tunnel(self, instance_name):
-        if self._is_tunnel_running(instance_name):
+        if self.is_tunnel_running(instance_name):
             self.__tunnel_processes[instance_name].kill()
             del self.__tunnel_processes[instance_name]
 
