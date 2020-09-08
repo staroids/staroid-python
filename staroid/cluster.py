@@ -100,5 +100,5 @@ class ClusterApi:
         if r.status_code == 200:
             return cluster_to_del
         else:
-            logging.error("Can not create clusters {}", r.status_code)
+            logging.error("Can not delete clusters {}", r.status_code)
             return None
