@@ -48,6 +48,9 @@ class ClusterApi:
 
     def get(self, name):
         clusters = self.get_all()
+        if clusters == None:
+            return None
+
         cluster_found = None
         for c in clusters:
             if c.name() == name:
