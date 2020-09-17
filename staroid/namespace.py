@@ -34,6 +34,12 @@ class Namespace:
     def url(self):
         return self.__json["url"]
 
+    def created_date(self):
+        return self.__json["createdDate"]
+
+    def terminated_date(self):
+        return self.__json["terminatedDate"]
+
 class NamespaceApi:
     """Namespace api"""
 
@@ -64,11 +70,15 @@ class NamespaceApi:
         if namespaces == None:
             return None
 
+        removed = None
         for ns in namespaces:
+            if ns.phase() == "REMOVED":
+                removed = ns
+                continue
             if ns.alias() == instance_name:
                 return ns
 
-        return None
+        return removed
 
     def get_by_id(self, instance_id):
         r = self.__staroid._api_get(

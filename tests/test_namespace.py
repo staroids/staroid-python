@@ -16,7 +16,7 @@ def wait_for_phase(ns_api, ns, phase):
         if max_wait == 0:
             break
 
-class TestCluster(unittest.TestCase):
+class TestNamespace(unittest.TestCase):
     @unittest.skipUnless(integration_test_ready(), "Integration test environment is not configured")
     def test_crud_namespace(self):
         # given
