@@ -95,7 +95,7 @@ class NamespaceApi:
             logging.error("Can not get namespace {}", r.status_code)
             return None
 
-    def create(self, instance_name, commit_url):
+    def create(self, instance_name, commit_url, dependencies=None, params=None):
         c = Commit(commit_url)
 
         r = self.__staroid._api_post(
@@ -109,7 +109,9 @@ class NamespaceApi:
                 "repo": c.repo(),
                 "branch": c.branch(),
                 "commit": c.commit(),
-                "instanceName": instance_name
+                "instanceName": instance_name,
+                "dependencies": dependencies,
+                "paramValues": params
             }
         )
         if r.status_code == 200:
